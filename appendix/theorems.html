@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Appendix B · Theorems &amp; Proofs — Hunting SRG(99)</title>
+<link rel="stylesheet" href="../assets/book.css">
+<link rel="stylesheet" href="../assets/print.css" media="print">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+</head>
+<body>
+
+<div class="book-title-string">Hunting SRG(99)</div>
+
+<div class="book-shell">
+
+<nav class="nav-sidebar" aria-label="Table of contents">
+    <h2>Front Matter</h2>
+    <ol><li><a href="../index.html">Title &amp; Contents</a></li></ol>
+    <h2>Part I — The Problem</h2>
+    <ol>
+        <li><a href="../part1_problem/ch01_problem.html">1. Conway's $1000 Problem</a></li>
+        <li><a href="../part1_problem/ch02_structure.html">2. Spectrum &amp; Local Structure</a></li>
+    </ol>
+    <h2>Part II — The Hunt</h2>
+    <ol start="3">
+        <li><a href="../part2_hunt/ch03_symmetry.html">3. Symmetry &amp; the Order-7 Door</a></li>
+        <li><a href="../part2_hunt/ch04_sat.html">4. The SAT Verdict</a></li>
+        <li><a href="../part2_hunt/ch05_spectral.html">5. Spectral &amp; Geometric Attacks</a></li>
+    </ol>
+    <h2>Part III — Frontier</h2>
+    <ol start="6">
+        <li><a href="../part3_frontier/ch06_frontier.html">6. Findings &amp; the Frontier</a></li>
+    </ol>
+    <h2>Appendices</h2>
+    <ol>
+        <li><a href="notation.html">A. Notation &amp; Glossary</a></li>
+        <li><a href="theorems.html">B. Theorems &amp; Proofs</a></li>
+        <li><a href="bibliography.html">C. Bibliography</a></li>
+    </ol>
+</nav>
+
+<main class="chapter" role="main">
+
+<h1 class="chapter-title">
+    <span class="chapter-number">Appendix B</span>
+    Theorems &amp; Proofs
+</h1>
+
+<p class="lead">
+The mathematical spine of the hunt. The structural results (B.1–B.3, B.5)
+are unconditional; the "no automorphism" / "not Cayley" results (B.4) are
+exhaustive computations terminating in real certificates.
+</p>
+
+<div class="callout theorem">
+    <div class="callout-title">Theorem B.1 (degree is forced) — Ch 2</div>
+    <p>
+    A graph on $99$ vertices with $\lambda=1$ and $\mu=2$ is $14$-regular.
+    </p>
+    <p>
+    <em>Proof.</em> For a vertex of degree $d$, $\lambda=1$ makes $N(v)$ a
+    perfect matching (B.2), so $d$ is even and $N(v)$ has $\tfrac d2$ edges;
+    each of the $\binom d2-\tfrac d2$ non-adjacent pairs in $N(v)$ needs a
+    distinct common neighbour in $V\setminus N[v]$, giving
+    $\binom d2-\tfrac d2 = 99-d-1$, whence $d=14$. $\square$
+    </p>
+</div>
+
+<div class="callout theorem">
+    <div class="callout-title">Theorem B.2 (neighbourhood is $7K_2$) — Ch 2</div>
+    <p>
+    In any $\mathrm{SRG}(99,14,1,2)$, each neighbourhood $N(v)$ induces a
+    perfect matching — seven disjoint edges — and contains no claw $K_{1,2}$.
+    </p>
+    <p>
+    <em>Proof.</em> For $u\in N(v)$, the edge $uv$ lies in a unique
+    triangle ($\lambda=1$), so $u$ has exactly one neighbour in $N(v)$;
+    thus $N(v)$ is $1$-regular, a perfect matching. A claw would give its
+    centre two neighbours in $N(v)$, contradicting $\lambda=1$. $\square$
+    </p>
+</div>
+
+<div class="callout theorem">
+    <div class="callout-title">Theorem B.3 (spectrum) — Ch 2</div>
+    <p>
+    Every $\mathrm{SRG}(99,14,1,2)$ has spectrum
+    $\{14^1, 3^{54}, (-4)^{44}\}$.
+    </p>
+    <p>
+    <em>Proof.</em> $x^2-(\lambda-\mu)x-(k-\mu)=x^2+x-12=(x-3)(x+4)$ gives
+    $r=3,\,s=-4$; $1+f+g=99$ and $14+3f-4g=0$ give $f=54,\,g=44$. $\square$
+    </p>
+</div>
+
+<div class="callout theorem">
+    <div class="callout-title">Theorem B.4 (closed symmetry) — Ch 3</div>
+    <p>
+    No $\mathrm{SRG}(99,14,1,2)$ admits an automorphism of order $11$ or
+    $3$, and none is a Cayley graph on an abelian group of order $99$.
+    </p>
+    <p>
+    <em>Proof.</em> Exhaustive orbit-matrix enumeration: all three order-$11$
+    semiregular configurations are UNSAT, and the order-$3$ cases yield $0$
+    matrices. The two abelian groups of order $99$ ($\mathbb{Z}_{99}$,
+    $\mathbb{Z}_3\times\mathbb{Z}_{33}$) carry no
+    $(99,14,1,2)$-difference set (prescribed-difference-set SAT, UNSAT).
+    $\square$
+    </p>
+</div>
+
+<div class="callout theorem">
+    <div class="callout-title">Theorem B.5 (triangle filter non-engagement) — Ch 5</div>
+    <p>
+    The triangle-neighbourhood Gram filter does not over-constrain
+    $\mathrm{SRG}(99,14,1,2)$: the amenability margin is
+    $(3k-3\lambda)-\min(f,g)=39-44=-5<0$, so the local PSD system is
+    under-determined. Conway's graph is the unique open case where
+    $\lambda=1$ rigidifies the neighbourhood yet the multiplicity
+    $g=44$ of $s=-4$ is too large for the filter to bite.
+    </p>
+</div>
+
+<div class="callout theorem">
+    <div class="callout-title">Theorem B.6 (claw-minimisation equivalence) — Ch 4</div>
+    <p>
+    Among $14$-regular graphs on $99$ vertices with $\mu=2$, one minimising
+    the number of neighbourhood claws $K_{1,2}$ has zero claws iff an
+    $\mathrm{SRG}(99,14,1,2)$ exists; a positive minimum proves
+    non-existence.
+    </p>
+    <p>
+    <em>Proof idea.</em> Zero claws $\Leftrightarrow$ every $N(v)$ is
+    claw-free $\Leftrightarrow$ (with $\mu=2$, $14$-regular) $\lambda=1$
+    $\Leftrightarrow$ the graph is the target SRG (Theorem B.2). $\square$
+    </p>
+</div>
+
+<div class="chapter-nav">
+    <a class="prev" href="../part3_frontier/ch06_frontier.html">Ch 6 · Findings &amp; the Frontier</a>
+    <a class="next" href="bibliography.html">Appendix C · Bibliography</a>
+</div>
+
+<footer class="book-foot">
+    <p><em>Hunting SRG(99)</em> · Appendix B · Tony Koval · CC-BY-4.0.</p>
+</footer>
+
+</main>
+
+</div>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+        onload="BookInit.renderMath()"></script>
+<script src="../assets/book.js"></script>
+
+</body>
+</html>

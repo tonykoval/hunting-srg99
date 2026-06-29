@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 5 · Spectral &amp; Geometric Attacks — Hunting SRG(99)</title>
+<link rel="stylesheet" href="../assets/book.css">
+<link rel="stylesheet" href="../assets/print.css" media="print">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+</head>
+<body>
+
+<div class="book-title-string">Hunting SRG(99)</div>
+
+<div class="book-shell">
+
+<nav class="nav-sidebar" aria-label="Table of contents">
+    <h2>Front Matter</h2>
+    <ol><li><a href="../index.html">Title &amp; Contents</a></li></ol>
+    <h2>Part I — The Problem</h2>
+    <ol>
+        <li><a href="../part1_problem/ch01_problem.html">1. Conway's $1000 Problem</a></li>
+        <li><a href="../part1_problem/ch02_structure.html">2. Spectrum &amp; Local Structure</a></li>
+    </ol>
+    <h2>Part II — The Hunt</h2>
+    <ol start="3">
+        <li><a href="ch03_symmetry.html">3. Symmetry &amp; the Order-7 Door</a></li>
+        <li><a href="ch04_sat.html">4. The SAT Verdict</a></li>
+        <li><a href="ch05_spectral.html">5. Spectral &amp; Geometric Attacks</a></li>
+    </ol>
+    <h2>Part III — Frontier</h2>
+    <ol start="6">
+        <li><a href="../part3_frontier/ch06_frontier.html">6. Findings &amp; the Frontier</a></li>
+    </ol>
+    <h2>Appendices</h2>
+    <ol>
+        <li><a href="../appendix/notation.html">A. Notation &amp; Glossary</a></li>
+        <li><a href="../appendix/theorems.html">B. Theorems &amp; Proofs</a></li>
+        <li><a href="../appendix/bibliography.html">C. Bibliography</a></li>
+    </ol>
+</nav>
+
+<main class="chapter" role="main">
+
+<h1 class="chapter-title">
+    <span class="chapter-number">Chapter 5 · Part II</span>
+    Spectral &amp; Geometric Attacks
+</h1>
+
+<p class="lead">
+The method that recently <em>refuted</em> a neighbouring open case,
+$\mathrm{SRG}(85,14,3,2)$, is geometric: embed the graph in Euclidean
+space and over-constrain the local triangles. Run the same machinery on
+Conway's graph and something striking happens — it is the one case where
+the triangle filter <em>does not engage</em>. Understanding why is the
+sharpest structural fact in this book.
+</p>
+
+<h2>5.1 &nbsp; The Euclidean embedding</h2>
+
+<p>
+Map each vertex to a unit vector in the $s=-4$ eigenspace, of dimension
+$g=44$. Adjacency fixes the inner products (one value for edges, another
+for non-edges), so the would-be graph is a configuration of $99$ unit
+vectors whose Gram matrix $G$ is positive semidefinite of rank exactly
+$44$. Any partial graph whose forced Gram matrix fails to be PSD of rank
+$\le 44$ cannot extend — a sound, symmetry-free pruning oracle, and the
+engine behind the Shpectorov–Zhao style of non-existence proof.
+</p>
+
+<h2>5.2 &nbsp; Why the triangle filter bites — usually</h2>
+
+<p>
+The decisive sharpening is <em>local</em>. Around each triangle, the
+Gram constraints on the $3k-3\lambda+t$ vectors of its neighbourhood are
+over-determined when that count exceeds the global multiplicity cap
+$\min(f,g)$ — the Gram matrix simply cannot be realised, and the case
+collapses. This is exactly what kills $(85,14,3,2)$: its triangle
+neighbourhood overflows the cap, the local PSD system is infeasible, and
+non-existence follows.
+</p>
+
+<h2>5.3 &nbsp; Conway's graph uniquely escapes</h2>
+
+<div class="callout warning">
+    <div class="callout-title">The non-engagement, in numbers</div>
+    <p>
+    For $(99,14,1,2)$ the triangle-neighbourhood count is
+    $3k-3\lambda+t = 42-3+t = 39+t$, while the multiplicity cap is
+    $\min(f,g)=\min(54,44)=44$. The "amenability" margin is
+    $39 - 44 = -5 < 0$: the local system is <strong>under</strong>-determined,
+    so the triangle filter cannot over-constrain it. Conway's graph is the
+    one open case where $\lambda=1$ rigidifies the neighbourhood
+    <em>locally</em> yet the large multiplicity $44$ of $s=-4$ leaves the
+    geometry too much room. The folklore that "$\lambda=1$ makes a graph
+    tractable" is, for Conway-99, simply false.
+    </p>
+</div>
+
+<p>
+This is a real, if negative, finding: the very tool that settled the
+neighbour $(85,14,3,2)$ provably does not reach Conway's graph at the
+triangle level. The local rigidity that should help instead arrives too
+small to bite.
+</p>
+
+<h2>5.4 &nbsp; The triangle reformulation</h2>
+
+<p>
+A complementary view moves to the $231$ triangles of Chapter 2. Existence
+of $\mathrm{SRG}(99,14,1,2)$ is equivalent to a regular structure on those
+triangles with parameters $(231,18,5,\le 3)$ — a sparser object
+($k/n = 18/231\approx 0.08$) whose own Gram and incidence constraints can
+be propagated independently. It is the encoding our tractability heuristic
+favours, but it is a separate, large search in its own right.
+</p>
+
+<div class="callout">
+    <div class="callout-title">What the geometry leaves</div>
+    <p>
+    The Euclidean / Gram filter is sound and runs, but on Conway-99 it
+    neither over-constrains the local triangles nor exhausts the global
+    configuration on one machine — like the order-$7$ door and the SAT
+    encoding, it is cluster-scale. The forced rank-$44$ Gram structure
+    (the $7K_2$ neighbourhood plus the global PSD condition) is exactly
+    what the distributed attack of Chapter 6 propagates.
+    </p>
+</div>
+
+<div class="chapter-nav">
+    <a class="prev" href="ch04_sat.html">Ch 4 · The SAT Verdict</a>
+    <a class="next" href="../part3_frontier/ch06_frontier.html">Ch 6 · Findings &amp; the Frontier</a>
+</div>
+
+<footer class="book-foot">
+    <p><em>Hunting SRG(99)</em> · Chapter 5 · Tony Koval · CC-BY-4.0.</p>
+</footer>
+
+</main>
+
+</div>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+        onload="BookInit.renderMath()"></script>
+<script src="../assets/book.js"></script>
+
+</body>
+</html>

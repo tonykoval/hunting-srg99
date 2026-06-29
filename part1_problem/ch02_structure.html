@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 2 · Spectrum &amp; Local Structure — Hunting SRG(99)</title>
+<link rel="stylesheet" href="../assets/book.css">
+<link rel="stylesheet" href="../assets/print.css" media="print">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+</head>
+<body>
+
+<div class="book-title-string">Hunting SRG(99)</div>
+
+<div class="book-shell">
+
+<nav class="nav-sidebar" aria-label="Table of contents">
+    <h2>Front Matter</h2>
+    <ol><li><a href="../index.html">Title &amp; Contents</a></li></ol>
+    <h2>Part I — The Problem</h2>
+    <ol>
+        <li><a href="ch01_problem.html">1. Conway's $1000 Problem</a></li>
+        <li><a href="ch02_structure.html">2. Spectrum &amp; Local Structure</a></li>
+    </ol>
+    <h2>Part II — The Hunt</h2>
+    <ol start="3">
+        <li><a href="../part2_hunt/ch03_symmetry.html">3. Symmetry &amp; the Order-7 Door</a></li>
+        <li><a href="../part2_hunt/ch04_sat.html">4. The SAT Verdict</a></li>
+        <li><a href="../part2_hunt/ch05_spectral.html">5. Spectral &amp; Geometric Attacks</a></li>
+    </ol>
+    <h2>Part III — Frontier</h2>
+    <ol start="6">
+        <li><a href="../part3_frontier/ch06_frontier.html">6. Findings &amp; the Frontier</a></li>
+    </ol>
+    <h2>Appendices</h2>
+    <ol>
+        <li><a href="../appendix/notation.html">A. Notation &amp; Glossary</a></li>
+        <li><a href="../appendix/theorems.html">B. Theorems &amp; Proofs</a></li>
+        <li><a href="../appendix/bibliography.html">C. Bibliography</a></li>
+    </ol>
+</nav>
+
+<main class="chapter" role="main">
+
+<h1 class="chapter-title">
+    <span class="chapter-number">Chapter 2 · Part I</span>
+    Spectrum &amp; Local Structure
+</h1>
+
+<p class="lead">
+Two conditions — $\lambda=1$ and $\mu=2$ on $99$ vertices — already pin
+down the degree, the eigenvalues, and the exact shape of every
+neighbourhood. Conway's graph has no slack; that rigidity is both why it
+might not exist and why it is so hard to rule out.
+</p>
+
+<h2>2.1 &nbsp; The degree is forced</h2>
+
+<div class="callout theorem">
+    <div class="callout-title">Theorem (14-regularity is automatic)</div>
+    <p>
+    A graph on $99$ vertices in which every two adjacent vertices have
+    exactly $\lambda=1$ common neighbour and every two non-adjacent
+    vertices have exactly $\mu=2$ is necessarily $14$-regular.
+    </p>
+    <p>
+    <em>Proof.</em> Fix $v$ of degree $d$. The induced graph on $N(v)$ is a
+    perfect matching (below), so $d$ is even. Each non-adjacent pair inside
+    $N(v)$ needs a distinct common neighbour outside $N[v]$, giving
+    $|V\setminus N[v]| = \binom{d}{2}-\tfrac{d}{2} = 99-d-1$, i.e.
+    $\binom{d}{2}-\tfrac d2 = 98-d$. Solving, $d=14$. $\square$
+    </p>
+</div>
+
+<p>
+So the "$14$" in $(99,14,1,2)$ is not an extra hypothesis — it is a
+consequence. The problem is genuinely just "$\lambda=1,\ \mu=2$, on $99$
+points."
+</p>
+
+<h2>2.2 &nbsp; Every neighbourhood is seven disjoint edges</h2>
+
+<p>
+$\lambda=1$ means any two adjacent vertices share exactly one common
+neighbour. Inside $N(v)$ (the $14$ neighbours of $v$), each neighbour $u$
+is adjacent to $v$, so $u$ and $v$ share exactly one common neighbour —
+which must lie in $N(v)$. Thus every vertex of $N(v)$ has degree exactly
+$1$ within $N(v)$: the neighbourhood induces a <strong>perfect matching</strong>,
+$7$ disjoint edges.
+</p>
+
+<div class="callout">
+    <div class="callout-title">No claws allowed</div>
+    <p>
+    Equivalently, $N(v)$ contains no path $P_3$ (no "claw" $K_{1,2}$): if it
+    did, the centre would have two neighbours in $N(v)$, forcing a second
+    common neighbour with $v$ and breaking $\lambda=1$. So $N(v)$ is a
+    disjoint union of complete graphs, and $\lambda=1$ makes each a single
+    edge — a $7$-edge matching. This is the local fingerprint every search
+    in Part II exploits.
+    </p>
+</div>
+
+<h2>2.3 &nbsp; The spectrum</h2>
+
+<p>
+The non-principal eigenvalues solve
+$x^2-(\lambda-\mu)x-(k-\mu) = x^2 + x - 12 = (x-3)(x+4) = 0$, so $r=3$,
+$s=-4$. Multiplicities come from $1+f+g=99$ and $14+3f-4g=\mathrm{tr}(A)=0$:
+</p>
+
+<div class="callout theorem">
+    <div class="callout-title">Spectrum of any SRG(99,14,1,2)</div>
+    <p style="text-align:center">
+    $\mathrm{spec}(A) = \{\,14^{1},\ \ 3^{54},\ \ (-4)^{44}\,\}.$
+    </p>
+    <p>
+    Integral multiplicities ($f=54$, $g=44$). The large multiplicity
+    $44$ of $s=-4$ is the quiet villain of the story: it is exactly what
+    makes the triangle-based geometric filters fail to engage (Chapter 5).
+    </p>
+</div>
+
+<h2>2.4 &nbsp; The triangle world</h2>
+
+<p>
+With $99\cdot14/2 = 693$ edges, each in a unique triangle, the graph
+carries exactly $693/3 = \mathbf{231}$ triangles. These triangles are not
+incidental — they encode the whole graph, and the existence of
+$\mathrm{SRG}(99,14,1,2)$ is equivalent to the existence of a related
+combinatorial structure on those $231$ triangles (a strongly-regular-graph
+parameter set in its own right, $(231,18,\,\cdot\,,\le 3)$). Several
+attacks in Part II move between these two views.
+</p>
+
+<h2>2.5 &nbsp; Feasibility: nothing forbids it</h2>
+
+<table>
+    <thead><tr><th>Test</th><th>Verdict</th></tr></thead>
+    <tbody>
+        <tr><td>Counting $(n-k-1)\mu=k(k-\lambda-1)$</td><td>passes ($84\cdot2=14\cdot12=168$)</td></tr>
+        <tr><td>Integral multiplicities</td><td>passes ($54,\,44$)</td></tr>
+        <tr><td>Krein conditions</td><td>passes</td></tr>
+        <tr><td>Absolute bound</td><td>passes</td></tr>
+        <tr><td><strong>Known construction / non-existence</strong></td><td><strong>neither</strong></td></tr>
+    </tbody>
+</table>
+
+<p>
+The parameters are immaculate. If Conway's graph does not exist, the proof
+must come from deeper than the spectrum — from the combinatorics of those
+$231$ triangles, or from exhausting the search. Part II is the record of
+both routes.
+</p>
+
+<div class="chapter-nav">
+    <a class="prev" href="ch01_problem.html">Ch 1 · Conway's $1000 Problem</a>
+    <a class="next" href="../part2_hunt/ch03_symmetry.html">Ch 3 · Symmetry &amp; the Order-7 Door</a>
+</div>
+
+<footer class="book-foot">
+    <p><em>Hunting SRG(99)</em> · Chapter 2 · Tony Koval · CC-BY-4.0.</p>
+</footer>
+
+</main>
+
+</div>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+        onload="BookInit.renderMath()"></script>
+<script src="../assets/book.js"></script>
+
+</body>
+</html>

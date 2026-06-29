@@ -1,0 +1,119 @@
+/* Print stylesheet — drives Ctrl+P → Save as PDF */
+
+@page {
+    size: A4;
+    margin: 2.5cm 2.2cm 2.5cm 2.2cm;
+    @top-left { content: string(book-title); font-size: 9pt; color: #666; font-family: sans-serif; }
+    @top-right { content: string(chapter-title); font-size: 9pt; color: #666; font-family: sans-serif; }
+    @bottom-center { content: counter(page); font-size: 9pt; color: #666; font-family: sans-serif; }
+}
+
+@page :first {
+    @top-left { content: none; }
+    @top-right { content: none; }
+}
+
+@media print {
+    :root {
+        --bg: white;
+        --text: #000;
+        --muted: #333;
+        --rule: #999;
+        --accent: #000;
+        --accent-soft: #666;
+        --link: #000;
+        --code-bg: #f4f4f4;
+        --code-border: #bbb;
+        --sidenote-bg: #f4f4f4;
+    }
+
+    body {
+        background: white;
+        color: black;
+        font-size: 11pt;
+        line-height: 1.45;
+    }
+
+    .book-shell {
+        display: block;
+        max-width: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .nav-sidebar,
+    .chapter-nav,
+    .interactive .controls,
+    .interactive button,
+    footer.book-foot {
+        display: none !important;
+    }
+
+    main.chapter { max-width: 100%; }
+
+    h1.chapter-title {
+        page-break-before: always;
+        string-set: chapter-title content();
+        font-size: 22pt;
+        border-bottom: 1.5pt solid black;
+    }
+
+    h1.chapter-title:first-child { page-break-before: avoid; }
+
+    h1.chapter-title .chapter-number {
+        font-size: 9pt;
+        color: #666;
+    }
+
+    h2 { font-size: 14pt; page-break-after: avoid; }
+    h3 { font-size: 12pt; page-break-after: avoid; color: black; }
+    h4 { font-size: 11pt; page-break-after: avoid; }
+
+    p, li { orphans: 3; widows: 3; }
+
+    figure, table, pre, .callout, .interactive {
+        page-break-inside: avoid;
+    }
+
+    pre {
+        font-size: 8.5pt;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        border-width: 0.5pt;
+    }
+
+    code {
+        font-size: 9pt;
+        border-width: 0.5pt;
+    }
+
+    table { font-size: 9.5pt; }
+    th, td { border-bottom: 0.5pt solid #666; padding: 0.3em 0.5em; }
+
+    .callout {
+        border-left-width: 2pt;
+        background: #f4f4f4;
+        padding: 0.5em 0.8em;
+    }
+
+    .interactive {
+        border: 0.5pt dashed #999;
+        background: #fafafa;
+    }
+
+    /* Show URLs after links as footnotes */
+    a[href^="http"]::after,
+    a[href^="www"]::after {
+        content: " [" attr(href) "]";
+        font-size: 85%;
+        color: #666;
+        word-break: break-all;
+    }
+
+    /* Don't append href for internal anchors or mailto */
+    a[href^="#"]::after,
+    a[href^="mailto"]::after { content: ""; }
+
+    /* Set running-header book title via a hidden element on the first page */
+    .book-title-string { string-set: book-title content(); display: none; }
+}

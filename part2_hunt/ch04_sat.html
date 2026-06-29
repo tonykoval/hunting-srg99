@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 4 · The SAT Verdict — Hunting SRG(99)</title>
+<link rel="stylesheet" href="../assets/book.css">
+<link rel="stylesheet" href="../assets/print.css" media="print">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+</head>
+<body>
+
+<div class="book-title-string">Hunting SRG(99)</div>
+
+<div class="book-shell">
+
+<nav class="nav-sidebar" aria-label="Table of contents">
+    <h2>Front Matter</h2>
+    <ol><li><a href="../index.html">Title &amp; Contents</a></li></ol>
+    <h2>Part I — The Problem</h2>
+    <ol>
+        <li><a href="../part1_problem/ch01_problem.html">1. Conway's $1000 Problem</a></li>
+        <li><a href="../part1_problem/ch02_structure.html">2. Spectrum &amp; Local Structure</a></li>
+    </ol>
+    <h2>Part II — The Hunt</h2>
+    <ol start="3">
+        <li><a href="ch03_symmetry.html">3. Symmetry &amp; the Order-7 Door</a></li>
+        <li><a href="ch04_sat.html">4. The SAT Verdict</a></li>
+        <li><a href="ch05_spectral.html">5. Spectral &amp; Geometric Attacks</a></li>
+    </ol>
+    <h2>Part III — Frontier</h2>
+    <ol start="6">
+        <li><a href="../part3_frontier/ch06_frontier.html">6. Findings &amp; the Frontier</a></li>
+    </ol>
+    <h2>Appendices</h2>
+    <ol>
+        <li><a href="../appendix/notation.html">A. Notation &amp; Glossary</a></li>
+        <li><a href="../appendix/theorems.html">B. Theorems &amp; Proofs</a></li>
+        <li><a href="../appendix/bibliography.html">C. Bibliography</a></li>
+    </ol>
+</nav>
+
+<main class="chapter" role="main">
+
+<h1 class="chapter-title">
+    <span class="chapter-number">Chapter 4 · Part II</span>
+    The SAT Verdict
+</h1>
+
+<p class="lead">
+The most direct attack is to write "$\Gamma$ is an
+$\mathrm{SRG}(99,14,1,2)$" as a Boolean formula and let a solver decide it.
+A dedicated 2023 study did exactly that — and its central finding is a
+negative one that doubles as a structural insight: SAT solvers cannot
+finish, and the reason is that Conway's graph has too little symmetry to
+exploit.
+</p>
+
+<h2>4.1 &nbsp; The encoding, and why it explodes</h2>
+
+<p>
+Put one Boolean variable $x_{ij}$ on each of the $\binom{99}{2}=4851$
+possible edges. The $\mu=2$ and $\lambda=1$ conditions are counting
+constraints on common neighbours, and each common-neighbour term
+$x_{it}x_{jt}$ is a product needing its own auxiliary variable ("cherry").
+The bookkeeping is brutal:
+</p>
+
+<div class="callout">
+    <div class="callout-title">Encoding size</div>
+    <p>
+    Regularity alone, for one vertex, is
+    $\binom{98}{13}+\binom{98}{15}\approx 1.8\times10^{17}$ clauses — so the
+    degree constraints must be dropped (they are redundant, Ch 2). Even the
+    $\lambda$/$\mu$ "cherry" constraints alone run to $\approx 7\times10^8$
+    clauses, about $22$ GB. Stabilising one vertex and its neighbourhood
+    reduces the free part to $\tfrac{14}{2}\cdot\!\binom{}{}\!\ldots = 84$
+    unordered pairs, but the residual search space is still far beyond what
+    a solver can traverse.
+    </p>
+</div>
+
+<p>
+Crucially the blow-up is not solver-specific: CP-SAT and the
+competition-grade <code>kissat</code> fail identically. The bottleneck is
+the formula, not the back end.
+</p>
+
+<h2>4.2 &nbsp; The verdict</h2>
+
+<div class="callout theorem">
+    <div class="callout-title">The empirical finding (Keramatipour 2023)</div>
+    <p>
+    Encoding $\mathrm{SRG}(99,14,1,2)$ as SAT — direct CNF, pseudo-Boolean,
+    and a "triangular" $(231,18,5,\le3)$ reformulation — and running it
+    yields, in every variant, <strong>no decision in reasonable time</strong>.
+    The study traces this to the absence of exploitable symmetry: SAT
+    succeeds on strongly regular graphs with <em>large</em> automorphism
+    groups (where symmetry-breaking collapses the search) and fails on the
+    asymmetric ones — and Conway's graph, if it exists, is asymmetric.
+    </p>
+</div>
+
+<p>
+This is the same wall the sister volume <em>Hunting SRG(37)</em> documents
+from the other side: dynamic symmetry breaking is what makes a graph-search
+SAT instance tractable, and a graph with no symmetry offers nothing to
+break.
+</p>
+
+<h2>4.3 &nbsp; A sharper reformulation: minimise the claws</h2>
+
+<p>
+One idea from the study survives as a genuinely different lever. By
+$\lambda=1$, every neighbourhood must be a claw-free union of complete
+graphs — and for these parameters, exactly $7$ disjoint edges (Ch 2).
+Recast existence as an optimisation: hold $14$-regularity and $\mu=2$ as
+hard constraints, and <em>minimise the number of claws</em> ($K_{1,2}$)
+inside neighbourhoods as a soft objective.
+</p>
+
+<div class="callout theorem">
+    <div class="callout-title">Claw-minimisation (MAX-SAT)</div>
+    <p>
+    If a $14$-regular, $\mu=2$ graph on $99$ vertices exists, then a graph
+    minimising the number of neighbourhood claws attains <em>zero</em> claws
+    — and a zero-claw graph has $\lambda=1$, hence is an
+    $\mathrm{SRG}(99,14,1,2)$. So the question becomes: can the claw count
+    be driven to $0$? If the minimum is positive, no such graph exists.
+    </p>
+</div>
+
+<p>
+This turns a satisfiability wall into an optimisation landscape — the same
+move the SRG(37) hunt makes with its defect-repair search. It does not
+beat the wall on a single machine, but it is the encoding most likely to
+reward a distributed or learning-guided attack.
+</p>
+
+<h2>4.4 &nbsp; The lesson</h2>
+
+<div class="callout theorem">
+    <div class="callout-title">Wall: SAT needs symmetry, Conway's graph has none</div>
+    <p>
+    Generic SAT/CP on $(99,14,1,2)$ is dominated by common-neighbour
+    cardinality constraints ($10^8$+ clauses), and no back-end clears them.
+    What would change the picture is symmetry to break — but every closed
+    automorphism order (Chapter 3) says there is little or none. SAT is
+    therefore the wrong tool for the asymmetric core, and the decisive work
+    falls to geometry (Chapter 5) and distributed enumeration (Chapter 6).
+    </p>
+</div>
+
+<div class="chapter-nav">
+    <a class="prev" href="ch03_symmetry.html">Ch 3 · Symmetry &amp; the Order-7 Door</a>
+    <a class="next" href="ch05_spectral.html">Ch 5 · Spectral &amp; Geometric Attacks</a>
+</div>
+
+<footer class="book-foot">
+    <p><em>Hunting SRG(99)</em> · Chapter 4 · Tony Koval · CC-BY-4.0.</p>
+</footer>
+
+</main>
+
+</div>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+        onload="BookInit.renderMath()"></script>
+<script src="../assets/book.js"></script>
+
+</body>
+</html>

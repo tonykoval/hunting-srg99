@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 3 · Symmetry &amp; the Order-7 Door — Hunting SRG(99)</title>
+<link rel="stylesheet" href="../assets/book.css">
+<link rel="stylesheet" href="../assets/print.css" media="print">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+</head>
+<body>
+
+<div class="book-title-string">Hunting SRG(99)</div>
+
+<div class="book-shell">
+
+<nav class="nav-sidebar" aria-label="Table of contents">
+    <h2>Front Matter</h2>
+    <ol><li><a href="../index.html">Title &amp; Contents</a></li></ol>
+    <h2>Part I — The Problem</h2>
+    <ol>
+        <li><a href="../part1_problem/ch01_problem.html">1. Conway's $1000 Problem</a></li>
+        <li><a href="../part1_problem/ch02_structure.html">2. Spectrum &amp; Local Structure</a></li>
+    </ol>
+    <h2>Part II — The Hunt</h2>
+    <ol start="3">
+        <li><a href="ch03_symmetry.html">3. Symmetry &amp; the Order-7 Door</a></li>
+        <li><a href="ch04_sat.html">4. The SAT Verdict</a></li>
+        <li><a href="ch05_spectral.html">5. Spectral &amp; Geometric Attacks</a></li>
+    </ol>
+    <h2>Part III — Frontier</h2>
+    <ol start="6">
+        <li><a href="../part3_frontier/ch06_frontier.html">6. Findings &amp; the Frontier</a></li>
+    </ol>
+    <h2>Appendices</h2>
+    <ol>
+        <li><a href="../appendix/notation.html">A. Notation &amp; Glossary</a></li>
+        <li><a href="../appendix/theorems.html">B. Theorems &amp; Proofs</a></li>
+        <li><a href="../appendix/bibliography.html">C. Bibliography</a></li>
+    </ol>
+</nav>
+
+<main class="chapter" role="main">
+
+<h1 class="chapter-title">
+    <span class="chapter-number">Chapter 3 · Part II</span>
+    Symmetry &amp; the Order-7 Door
+</h1>
+
+<p class="lead">
+If Conway's graph has any symmetry, assuming it shrinks the search to a
+tiny orbit matrix. Order by order, the symmetric cases are being closed —
+$11$ gone, $3$ gone, the most symmetric Cayley case gone. One door stands
+ajar: an automorphism of order $7$, in a single rigid configuration that
+no desktop can exhaust.
+</p>
+
+<h2>3.1 &nbsp; The orbit-matrix engine</h2>
+
+<p>
+Assume $\Gamma=\mathrm{SRG}(99,14,1,2)$ has an automorphism $\sigma$ of
+prime order $p$. It splits the $99$ vertices into $f$ fixed points and
+$\tfrac{99-f}{p}$ orbits of size $p$, and the adjacency matrix collapses to
+a small <em>orbit matrix</em> obeying the Behbahani–Lam column equations.
+Enumerate those integer matrices exhaustively: <strong>none</strong> means
+no graph has that symmetry; <strong>one that lifts</strong> is Conway's
+graph. Because $99 = 3^2\cdot 11$, the orders that <em>divide</em> $99$ are
+$3,9,11,33,99$; other primes can still act, but only with fixed points.
+</p>
+
+<h2>3.2 &nbsp; What is closed</h2>
+
+<div class="interactive">
+    <span class="interactive-label">Automorphism-order status</span>
+    <div class="controls">
+        <label for="sy-st">Status:</label>
+        <select id="sy-st">
+            <option value="all">all</option>
+            <option value="closed">closed</option>
+            <option value="open">open / pending</option>
+        </select>
+    </div>
+    <table>
+        <thead><tr><th>Order</th><th>Action</th><th>Result</th><th>Status</th></tr></thead>
+        <tbody id="sy-body"></tbody>
+    </table>
+</div>
+
+<div class="callout theorem">
+    <div class="callout-title">Theorem (orders 11 and 3, and no abelian Cayley)</div>
+    <p>
+    No $\mathrm{SRG}(99,14,1,2)$ admits a semiregular automorphism of order
+    $11$ (all three feasible configurations UNSAT), nor an automorphism of
+    order $3$. Moreover it is not a Cayley graph on either abelian group of
+    order $99$ ($\mathbb{Z}_{99}$ and $\mathbb{Z}_3\times\mathbb{Z}_{33}$):
+    both prescribed-difference-set encodings are UNSAT. $\square$
+    </p>
+</div>
+
+<h2>3.3 &nbsp; The order-7 door</h2>
+
+<p>
+Seven does not divide $99$, but an order-$7$ automorphism can still act —
+with fixed points. Cesarz and Woldar (2023) proved there is exactly
+<em>one</em> possibility: a single fixed point and $14$ orbits of size $7$,
+the configuration $[1, 7^{14}]$. They could not decide whether such a graph
+exists; neither, yet, can we.
+</p>
+
+<div class="callout warning">
+    <div class="callout-title">The unique order-7 configuration $[1,7^{14}]$ — open</div>
+    <p>
+    Enumerating the $[1,7^{14}]$ orbit matrices, sharpened with the
+    Cesarz–Woldar $\Gamma_2$ orbit-valency constraints, the dedicated
+    solver ran <strong>281 million nodes in one hour without exhausting</strong>
+    the case — stack depth still climbing. The order-$7$ door is neither a
+    proof of non-existence nor a graph: it is cluster-scale. Closing it
+    UNSAT would strengthen Cesarz–Woldar; lifting one matrix would win
+    Conway's prize.
+    </p>
+</div>
+
+<h2>3.4 &nbsp; What remains</h2>
+
+<p>
+The involutions are the largest unfinished block: an order-$2$ automorphism
+fixes an odd number of points, giving $46$ feasible $(f,o)$ configurations,
+each a separate orbit-matrix run. Orders $9$, $33$, $99$ (cyclic, non-prime)
+and the small non-abelian groups are still to be swept. The pattern so far,
+though, is unmistakable and matches Conway's own intuition:
+</p>
+
+<div class="callout theorem">
+    <div class="callout-title">Standing structure</div>
+    <p>
+    Every automorphism order closed so far returns nothing. If Conway's
+    graph exists, its symmetry is <strong>small</strong> — most likely an
+    involution, the lone order-$7$ action, or nothing at all. That pushes
+    the decisive work toward the asymmetric methods of Chapters 4 and 5.
+    </p>
+</div>
+
+<div class="chapter-nav">
+    <a class="prev" href="../part1_problem/ch02_structure.html">Ch 2 · Spectrum &amp; Local Structure</a>
+    <a class="next" href="ch04_sat.html">Ch 4 · The SAT Verdict</a>
+</div>
+
+<footer class="book-foot">
+    <p><em>Hunting SRG(99)</em> · Chapter 3 · Tony Koval · CC-BY-4.0.</p>
+</footer>
+
+</main>
+
+</div>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+        onload="BookInit.renderMath()"></script>
+<script src="../assets/book.js"></script>
+
+<script>
+/* --------------------- Automorphism-order status --------------------- */
+(function () {
+    "use strict";
+    const ROWS = [
+        { ord:"11", act:"semiregular (9 orbits)",          res:"all 3 configs UNSAT",     st:"closed" },
+        { ord:"3",  act:"semiregular / fixed",             res:"0 orbit matrices",        st:"closed" },
+        { ord:"Cayley", act:"Z₉₉ &amp; Z₃×Z₃₃ (abelian)",  res:"no difference set (UNSAT)", st:"closed" },
+        { ord:"7",  act:"[1, 7¹⁴] (Cesarz–Woldar)",        res:"281 M nodes, not exhausted", st:"open" },
+        { ord:"2",  act:"involution, f odd",               res:"46 configs",              st:"open" },
+        { ord:"9",  act:"cyclic non-prime",                res:"—",                       st:"open" },
+        { ord:"33, 99", act:"cyclic non-prime",            res:"—",                       st:"open" }
+    ];
+    const $ = id => document.getElementById(id);
+    const body = $("sy-body");
+    function render() {
+        const fs = $("sy-st").value;
+        body.innerHTML = "";
+        for (const r of ROWS) {
+            if (fs !== "all" && r.st !== fs) continue;
+            const tr = document.createElement("tr");
+            const col = r.st === "closed" ? "#2e7d32" : "#b8860b";
+            tr.innerHTML =
+                `<td style="font-family:var(--font-mono)">${r.ord}</td><td>${r.act}</td>` +
+                `<td>${r.res}</td><td style="color:${col};font-weight:600">${r.st}</td>`;
+            body.appendChild(tr);
+        }
+    }
+    $("sy-st").addEventListener("change", render);
+    render();
+})();
+</script>
+
+</body>
+</html>

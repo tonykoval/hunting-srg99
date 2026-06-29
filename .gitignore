@@ -1,0 +1,12 @@
+# Generated print artifact (build with: python scripts/build_print.py)
+print_full.html
+
+# Python
+__pycache__/
+*.pyc
+
+# Editors / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

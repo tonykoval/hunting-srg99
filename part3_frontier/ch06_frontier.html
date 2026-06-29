@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 6 · Findings &amp; the Frontier — Hunting SRG(99)</title>
+<link rel="stylesheet" href="../assets/book.css">
+<link rel="stylesheet" href="../assets/print.css" media="print">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+</head>
+<body>
+
+<div class="book-title-string">Hunting SRG(99)</div>
+
+<div class="book-shell">
+
+<nav class="nav-sidebar" aria-label="Table of contents">
+    <h2>Front Matter</h2>
+    <ol><li><a href="../index.html">Title &amp; Contents</a></li></ol>
+    <h2>Part I — The Problem</h2>
+    <ol>
+        <li><a href="../part1_problem/ch01_problem.html">1. Conway's $1000 Problem</a></li>
+        <li><a href="../part1_problem/ch02_structure.html">2. Spectrum &amp; Local Structure</a></li>
+    </ol>
+    <h2>Part II — The Hunt</h2>
+    <ol start="3">
+        <li><a href="../part2_hunt/ch03_symmetry.html">3. Symmetry &amp; the Order-7 Door</a></li>
+        <li><a href="../part2_hunt/ch04_sat.html">4. The SAT Verdict</a></li>
+        <li><a href="../part2_hunt/ch05_spectral.html">5. Spectral &amp; Geometric Attacks</a></li>
+    </ol>
+    <h2>Part III — Frontier</h2>
+    <ol start="6">
+        <li><a href="ch06_frontier.html">6. Findings &amp; the Frontier</a></li>
+    </ol>
+    <h2>Appendices</h2>
+    <ol>
+        <li><a href="../appendix/notation.html">A. Notation &amp; Glossary</a></li>
+        <li><a href="../appendix/theorems.html">B. Theorems &amp; Proofs</a></li>
+        <li><a href="../appendix/bibliography.html">C. Bibliography</a></li>
+    </ol>
+</nav>
+
+<main class="chapter" role="main">
+
+<h1 class="chapter-title">
+    <span class="chapter-number">Chapter 6 · Part III</span>
+    Findings &amp; the Frontier
+</h1>
+
+<p class="lead">
+Conway's prize is unclaimed, but the hunt has mapped the terrain precisely:
+what is closed, the three walls and their single common cause, and the few
+doors still ajar. Here is the state of play and exactly what either ending
+requires.
+</p>
+
+<h2>6.1 &nbsp; What is proven</h2>
+
+<table>
+    <thead><tr><th>Result</th><th>How</th></tr></thead>
+    <tbody>
+        <tr><td>$14$-regularity is forced</td><td>local rules ($\lambda=1,\mu=2$) ⇒ degree $14$</td></tr>
+        <tr><td>No order-$11$ automorphism</td><td>orbit matrices, all $3$ configs UNSAT</td></tr>
+        <tr><td>No order-$3$ automorphism</td><td>orbit matrices, $0$ matrices</td></tr>
+        <tr><td>Not a Cayley graph (abelian)</td><td>$\mathbb{Z}_{99},\,\mathbb{Z}_3\times\mathbb{Z}_{33}$: no difference set</td></tr>
+        <tr><td>Triangle filter does not engage</td><td>amenability margin $39-44=-5<0$</td></tr>
+        <tr><td>SAT cannot decide it</td><td>$10^8$+ clauses; obstruction = no symmetry</td></tr>
+    </tbody>
+</table>
+
+<h2>6.2 &nbsp; Three walls, one cause</h2>
+
+<div class="callout theorem">
+    <div class="callout-title">The common cause: Conway's graph is (almost) asymmetric</div>
+    <p>
+    <strong>Symmetry</strong> closes order by order but leaves the lone
+    order-$7$ action and the involutions — because there is little symmetry
+    to find. <strong>SAT</strong> drowns in cardinality clauses — because
+    there is no symmetry to break. <strong>Geometry</strong> fails to
+    over-constrain the triangles — because the rank-$44$ embedding is too
+    roomy. All three are the same fact: if Conway's graph exists, it is
+    sparse and nearly rigid, exactly the regime in which every general
+    method pays full enumeration cost.
+    </p>
+</div>
+
+<h2>6.3 &nbsp; The doors still ajar</h2>
+
+<ul>
+    <li><strong>Order $7$: the configuration $[1,7^{14}]$.</strong> The
+        unique Cesarz–Woldar action; $281$ M solver nodes in an hour did not
+        exhaust it. Cluster-scale, and the single most famous open door.</li>
+    <li><strong>Involutions ($p=2$).</strong> $46$ feasible configurations,
+        each an orbit-matrix run — the largest unfinished symmetric block.</li>
+    <li><strong>Cyclic orders $9,33,99$ and small non-abelian groups.</strong>
+        Still to be swept.</li>
+    <li><strong>Fully rigid graphs.</strong> The asymmetric core, reached
+        only by the claw-minimisation optimisation (Ch 4) or the Gram-PSD
+        enumeration (Ch 5).</li>
+</ul>
+
+<h2>6.4 &nbsp; The decision procedure</h2>
+
+<div class="callout theorem">
+    <div class="callout-title">Two endings</div>
+    <p>
+    <strong>Existence.</strong> One lifted orbit matrix — from the order-$7$
+    door, an involution, or any other case — or one completed adjacency
+    matrix from the claw-minimisation / Gram search, is Conway's graph: the
+    $\$1000$ answer.<br>
+    <strong>Non-existence.</strong> Every automorphism order closed UNSAT
+    <em>and</em> the rigid space exhausted with zero claws unreachable, and
+    $\mathrm{SRG}(99,14,1,2)$ is refuted — joining $(85,14,3,2)$ in the
+    column of settled-by-non-existence.
+    </p>
+    <p>
+    A timeout settles nothing; both endings need real certificates.
+    </p>
+</div>
+
+<h2>6.5 &nbsp; The plan</h2>
+
+<ol>
+    <li><strong>Drive the order-$7$ door to a verdict.</strong> Run the
+        $[1,7^{14}]$ orbit-matrix enumeration to completion on a cluster —
+        a lift wins the prize, an UNSAT strengthens Cesarz–Woldar.</li>
+    <li><strong>Finish the involution sweep.</strong> Distribute the $46$
+        configurations; clearing them closes "no even-order symmetry".</li>
+    <li><strong>Push the claw-minimisation / Gram search.</strong> The
+        asymmetric core, on the optimisation encoding most amenable to
+        distributed and learning-guided attack.</li>
+</ol>
+
+<p>
+Conway's $99$-graph is the most famous open door in the strongly-regular
+tables. A decade on, it is still closed — but the map of how to push it is,
+at last, complete. This book is that map.
+</p>
+
+<div class="chapter-nav">
+    <a class="prev" href="../part2_hunt/ch05_spectral.html">Ch 5 · Spectral &amp; Geometric Attacks</a>
+    <a class="next" href="../appendix/theorems.html">Appendix B · Theorems &amp; Proofs</a>
+</div>
+
+<footer class="book-foot">
+    <p><em>Hunting SRG(99)</em> · Chapter 6 · Tony Koval · CC-BY-4.0.</p>
+</footer>
+
+</main>
+
+</div>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+        onload="BookInit.renderMath()"></script>
+<script src="../assets/book.js"></script>
+
+</body>
+</html>

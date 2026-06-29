@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hunting SRG(99) — Conway's $1000 99-Graph Problem</title>
+<meta name="description" content="An interactive book on John Conway's $1000 problem: does a strongly regular graph SRG(99,14,1,2) exist?">
+<meta name="author" content="Tony Koval">
+<link rel="stylesheet" href="assets/book.css">
+<link rel="stylesheet" href="assets/print.css" media="print">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+</head>
+<body>
+
+<div class="book-title-string">Hunting SRG(99)</div>
+
+<div class="book-shell">
+
+<nav class="nav-sidebar" aria-label="Table of contents">
+    <h2>Front Matter</h2>
+    <ol><li><a href="index.html">Title &amp; Contents</a></li></ol>
+    <h2>Part I — The Problem</h2>
+    <ol>
+        <li><a href="part1_problem/ch01_problem.html">1. Conway's $1000 Problem</a></li>
+        <li><a href="part1_problem/ch02_structure.html">2. Spectrum &amp; Local Structure</a></li>
+    </ol>
+    <h2>Part II — The Hunt</h2>
+    <ol start="3">
+        <li><a href="part2_hunt/ch03_symmetry.html">3. Symmetry &amp; the Order-7 Door</a></li>
+        <li><a href="part2_hunt/ch04_sat.html">4. The SAT Verdict</a></li>
+        <li><a href="part2_hunt/ch05_spectral.html">5. Spectral &amp; Geometric Attacks</a></li>
+    </ol>
+    <h2>Part III — Frontier</h2>
+    <ol start="6">
+        <li><a href="part3_frontier/ch06_frontier.html">6. Findings &amp; the Frontier</a></li>
+    </ol>
+    <h2>Appendices</h2>
+    <ol>
+        <li><a href="appendix/notation.html">A. Notation &amp; Glossary</a></li>
+        <li><a href="appendix/theorems.html">B. Theorems &amp; Proofs</a></li>
+        <li><a href="appendix/bibliography.html">C. Bibliography</a></li>
+    </ol>
+</nav>
+
+<main class="chapter" role="main">
+
+    <h1 class="chapter-title">
+        <span class="chapter-number">An Interactive Hunt Log</span>
+        Hunting SRG(99)
+    </h1>
+
+    <p class="lead">
+    John Conway offered $\$1000$ for it. Does a strongly regular graph
+    $\mathrm{SRG}(99,14,1,2)$ exist — a graph on $99$ vertices in which
+    every edge lies in a unique triangle and every non-edge in a unique
+    quadrilateral? A decade on, nobody has collected. This book is the map
+    of the hunt.
+    </p>
+
+    <h2>The one-sentence problem</h2>
+
+    <p>
+    A graph on $99$ vertices, $14$-regular, with $\lambda=1$ (adjacent
+    vertices share one common neighbour) and $\mu=2$ (non-adjacent share
+    two). The parameters pass every feasibility test ever devised, yet no
+    such graph has been built and none proved impossible.
+    </p>
+
+    <div class="callout warning">
+        <div class="callout-title">The motivating question</div>
+        <p>
+        Conway's "$99$-graph problem" is one of his five $\$1000$ problems.
+        A neighbour, $\mathrm{SRG}(85,14,3,2)$, was <em>refuted</em> by
+        Shpectorov–Zhao (2025); Conway's remains the most famous open door
+        in the strongly-regular tables. Build one graph and win the prize;
+        rule out every possibility and refute it. Either ending is a
+        result.
+        </p>
+    </div>
+
+    <h2>What this book is</h2>
+
+    <p>
+    An honest, reproducible <em>hunt log</em> on three fronts — reduce by
+    symmetry, encode as logic, constrain by geometry — and a precise
+    account of how far each reaches. The symmetric cases are falling order
+    by order; the SAT and geometric attacks have produced sharp negative
+    findings; and what remains is a short list of famous open doors.
+    </p>
+
+    <div class="callout">
+        <div class="callout-title">Already proven</div>
+        <p>
+        $14$-regularity is forced; every neighbourhood is seven disjoint
+        edges; no graph has an automorphism of order $11$ or $3$; none is
+        an abelian Cayley graph; and — uniquely among open cases — the
+        triangle-Gram filter that settled $(85,14,3,2)$ does
+        <em>not</em> engage here (Appendix B). What is left is the order-$7$
+        door $[1,7^{14}]$, the involutions, and the rigid core.
+        </p>
+    </div>
+
+    <h2>Map of the book</h2>
+
+    <p>
+    <strong>Part I — The Problem.</strong> Conway's question and why it
+    resists (Ch 1); the forced degree, the $7K_2$ neighbourhood, the
+    spectrum $\{14,3^{54},(-4)^{44}\}$, the $231$ triangles (Ch 2).
+    </p>
+    <p>
+    <strong>Part II — The Hunt.</strong> The automorphism sweep and the
+    order-$7$ door (Ch 3); the SAT verdict and the claw-minimisation
+    reformulation (Ch 4); the Euclidean / Gram attack and its unique
+    non-engagement (Ch 5).
+    </p>
+    <p>
+    <strong>Part III — Frontier.</strong> What is proven, the three walls
+    and their single cause, the open doors, and the decision procedure
+    (Ch 6).
+    </p>
+
+    <hr>
+
+    <h2>Front matter</h2>
+    <p>
+    <strong>Author.</strong> Tony Koval, <code>aktealc@gmail.com</code>.
+    <br>
+    <strong>Companion code.</strong> The orbit-matrix enumerator, SMS
+    solver, Gram-PSD filter and SAT encodings live in
+    <a href="https://github.com/tonykoval/orbit-gen">github.com/tonykoval/orbit-gen</a>.
+    <br>
+    <strong>Sister volumes.</strong>
+    <a href="https://github.com/tonykoval/hunting-srg37">Hunting SRG(37)</a>
+    (catalog completeness, conference parameters) and
+    <a href="https://github.com/tonykoval/hunting-srg69">Hunting SRG(69)</a>
+    (the smallest open existence question).
+    <br>
+    <strong>Licence.</strong> Content CC-BY-4.0; code MIT.
+    </p>
+
+    <p style="margin-top: 3em; text-align: center; font-style: italic; color: var(--muted);">
+    <em>Begin:</em>&nbsp; <a href="part1_problem/ch01_problem.html">Chapter 1 — Conway's $1000 Problem &rarr;</a>
+    </p>
+
+</main>
+
+</div>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+        onload="BookInit.renderMath()"></script>
+<script src="assets/book.js"></script>
+
+</body>
+</html>
