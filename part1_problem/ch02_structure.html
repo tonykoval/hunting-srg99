@@ -31,6 +31,7 @@
     <h2>Part III — Frontier</h2>
     <ol start="6">
         <li><a href="../part3_frontier/ch06_frontier.html">6. Findings &amp; the Frontier</a></li>
+        <li><a href="../part3_frontier/ch07_tools.html">7. Tools &amp; Reproducibility</a></li>
     </ol>
     <h2>Appendices</h2>
     <ol>
@@ -101,6 +102,24 @@ $7$ disjoint edges.
     </p>
 </div>
 
+<div class="interactive">
+    <span class="interactive-label">The neighbourhood $N(v)$ — try to break it</span>
+    <div id="nb-svg" style="text-align:center"></div>
+    <div class="controls" style="margin-top:0.4em">
+        <button id="nb-add" type="button">Add an edge inside N(v)</button>
+        <button id="nb-reset" type="button">Reset</button>
+        <span style="font-family:var(--font-mono);font-size:0.85em">
+            max triangles on an edge $v$–$u$: <span class="readout" id="nb-out">1</span>
+        </span>
+    </div>
+    <p style="font-size:0.85em;color:#555;margin-top:0.5em">
+        The $14$ neighbours of $v$ form seven disjoint edges (green). Adding
+        any edge <em>inside</em> $N(v)$ gives some neighbour a second
+        neighbour there — so the edge $v$–$u$ lands in two triangles, and
+        $\lambda=1$ breaks (red). The matching is forced.
+    </p>
+</div>
+
 <h2>2.3 &nbsp; The spectrum</h2>
 
 <p>
@@ -153,6 +172,25 @@ $231$ triangles, or from exhausting the search. Part II is the record of
 both routes.
 </p>
 
+<div class="interactive">
+    <span class="interactive-label">Feasibility calculator (pre-loaded with Conway-99)</span>
+    <div class="controls">
+        <label>$n$ <input id="fc-n" type="number" value="99" style="width:4em"></label>
+        <label>$k$ <input id="fc-k" type="number" value="14" style="width:4em"></label>
+        <label>$\lambda$ <input id="fc-l" type="number" value="1" style="width:4em"></label>
+        <label>$\mu$ <input id="fc-m" type="number" value="2" style="width:4em"></label>
+    </div>
+    <table>
+        <thead><tr><th>Quantity / test</th><th>Value</th></tr></thead>
+        <tbody id="fc-body"></tbody>
+    </table>
+    <p style="font-size:0.85em;color:#555;margin-top:0.4em">
+        Edit the parameters: the eigenvalues, multiplicities and standard
+        feasibility tests recompute live. Conway-99 passes them all — which
+        is exactly why it is open.
+    </p>
+</div>
+
 <div class="chapter-nav">
     <a class="prev" href="ch01_problem.html">Ch 1 · Conway's $1000 Problem</a>
     <a class="next" href="../part2_hunt/ch03_symmetry.html">Ch 3 · Symmetry &amp; the Order-7 Door</a>
@@ -170,6 +208,86 @@ both routes.
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
         onload="BookInit.renderMath()"></script>
 <script src="../assets/book.js"></script>
+
+<script>
+/* ---------- 7K2 neighbourhood visualiser ---------- */
+(function () {
+    "use strict";
+    const cx = 150, cy = 100, R = 78, N = 14;
+    const host = document.getElementById("nb-svg");
+    if (!host) return;
+    const pos = [];
+    for (let i = 0; i < N; i++) {
+        const a = (-90 + i * 360 / N) * Math.PI / 180;
+        pos.push([cx + R * Math.cos(a), cy + R * Math.sin(a)]);
+    }
+    let bad = false;
+    function draw() {
+        let s = '<svg viewBox="0 0 300 200" width="100%" style="max-width:340px">';
+        // spokes v–u
+        for (let i = 0; i < N; i++)
+            s += `<line x1="${cx}" y1="${cy}" x2="${pos[i][0].toFixed(1)}" y2="${pos[i][1].toFixed(1)}" stroke="#ddd" stroke-width="1"/>`;
+        // matching edges (green)
+        for (let p = 0; p < 7; p++) {
+            const u = pos[2*p], w = pos[2*p+1];
+            s += `<line x1="${u[0].toFixed(1)}" y1="${u[1].toFixed(1)}" x2="${w[0].toFixed(1)}" y2="${w[1].toFixed(1)}" stroke="#2e7d32" stroke-width="2.5"/>`;
+        }
+        // forbidden edge (red) between node 0 and node 2 (different pairs)
+        if (bad) {
+            const u = pos[0], w = pos[2];
+            s += `<line x1="${u[0].toFixed(1)}" y1="${u[1].toFixed(1)}" x2="${w[0].toFixed(1)}" y2="${w[1].toFixed(1)}" stroke="#b00020" stroke-width="2.5" stroke-dasharray="4 2"/>`;
+        }
+        // nodes
+        s += `<circle cx="${cx}" cy="${cy}" r="6" fill="#333"/><text x="${cx}" y="${cy-9}" font-size="10" text-anchor="middle" fill="#333">v</text>`;
+        for (let i = 0; i < N; i++) {
+            const hot = bad && (i === 0 || i === 2);
+            s += `<circle cx="${pos[i][0].toFixed(1)}" cy="${pos[i][1].toFixed(1)}" r="5" fill="${hot ? '#b00020' : '#888'}"/>`;
+        }
+        s += '</svg>';
+        host.innerHTML = s;
+        document.getElementById("nb-out").textContent = bad ? "2  (λ=1 broken)" : "1";
+        document.getElementById("nb-out").style.color = bad ? "#b00020" : "#2e7d32";
+    }
+    document.getElementById("nb-add").addEventListener("click", () => { bad = true; draw(); });
+    document.getElementById("nb-reset").addEventListener("click", () => { bad = false; draw(); });
+    draw();
+})();
+
+/* ---------- Feasibility calculator ---------- */
+(function () {
+    "use strict";
+    const ids = ["fc-n", "fc-k", "fc-l", "fc-m"];
+    const body = document.getElementById("fc-body");
+    if (!body) return;
+    function row(t, v, ok) {
+        const col = ok === true ? "#2e7d32" : ok === false ? "#b00020" : "#333";
+        return `<tr><td>${t}</td><td style="font-family:var(--font-mono);font-size:0.85em;color:${col}">${v}</td></tr>`;
+    }
+    function compute() {
+        const n = +document.getElementById("fc-n").value,
+              k = +document.getElementById("fc-k").value,
+              l = +document.getElementById("fc-l").value,
+              m = +document.getElementById("fc-m").value;
+        const disc = (l - m) * (l - m) + 4 * (k - m);
+        let html = "";
+        if (disc < 0) { body.innerHTML = row("eigenvalues", "non-real — infeasible", false); return; }
+        const sq = Math.sqrt(disc);
+        const r = ((l - m) + sq) / 2, s = ((l - m) - sq) / 2;
+        // multiplicities: f+g=n-1, k+r f+s g=0
+        const g = (k + r * (n - 1)) / (r - s), f = (n - 1) - g;
+        const fInt = Math.abs(f - Math.round(f)) < 1e-9 && Math.abs(g - Math.round(g)) < 1e-9;
+        const count = (n - k - 1) * m === k * (k - l - 1);
+        const intEig = Math.abs(sq - Math.round(sq)) < 1e-9;
+        html += row("eigenvalues r, s", (intEig ? r.toFixed(0) + ", " + s.toFixed(0) : r.toFixed(3) + ", " + s.toFixed(3)), null);
+        html += row("multiplicities f, g", (fInt ? Math.round(f) + ", " + Math.round(g) : f.toFixed(2) + ", " + g.toFixed(2)), fInt);
+        html += row("counting identity", count ? "passes (" + (n - k - 1) * m + " = " + k * (k - l - 1) + ")" : "FAILS", count);
+        html += row("integral multiplicities", fInt ? "passes" : "FAILS", fInt);
+        body.innerHTML = html;
+    }
+    ids.forEach(id => document.getElementById(id).addEventListener("input", compute));
+    compute();
+})();
+</script>
 
 </body>
 </html>

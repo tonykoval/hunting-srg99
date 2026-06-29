@@ -31,6 +31,7 @@
     <h2>Part III — Frontier</h2>
     <ol start="6">
         <li><a href="../part3_frontier/ch06_frontier.html">6. Findings &amp; the Frontier</a></li>
+        <li><a href="../part3_frontier/ch07_tools.html">7. Tools &amp; Reproducibility</a></li>
     </ol>
     <h2>Appendices</h2>
     <ol>
@@ -133,6 +134,37 @@ exhaustive computations terminating in real certificates.
     <em>Proof idea.</em> Zero claws $\Leftrightarrow$ every $N(v)$ is
     claw-free $\Leftrightarrow$ (with $\mu=2$, $14$-regular) $\lambda=1$
     $\Leftrightarrow$ the graph is the target SRG (Theorem B.2). $\square$
+    </p>
+</div>
+
+<div class="callout theorem">
+    <div class="callout-title">Theorem B.7 (unique order-7 action; Cesarz–Woldar 2023) — Ch 3</div>
+    <p>
+    If an $\mathrm{SRG}(99,14,1,2)$ admits an automorphism of order $7$, it
+    fixes exactly one vertex and acts in $14$ orbits of size $7$ — the
+    configuration $[1,7^{14}]$ — and no other order-$7$ action is possible.
+    </p>
+    <p>
+    <em>Provenance.</em> $7\nmid 99$, so the fixed-point count satisfies
+    $f\equiv 99\equiv 1\pmod 7$; the eigenvalue fixed-point bound and the
+    $\Gamma_2$ orbit-valency constraints then force $f=1$, leaving
+    $98=14\cdot7$ in orbits of size $7$. Existence within $[1,7^{14}]$
+    remains open (Cesarz–Woldar; cluster-scale enumeration). $\square$
+    </p>
+</div>
+
+<div class="callout theorem">
+    <div class="callout-title">Theorem B.8 (triangle reduction) — Ch 2, 5</div>
+    <p>
+    An $\mathrm{SRG}(99,14,1,2)$ has exactly $231$ triangles
+    ($99\cdot14/2 = 693$ edges, each in one triangle, $693/3=231$), and its
+    existence is equivalent to that of a regular incidence structure on
+    those triangles with parameters $(231,18,5,\le 3)$.
+    </p>
+    <p>
+    <em>Remark.</em> The reduced object is sparser ($k/n=18/231\approx0.08$),
+    which is why the triangle reformulation is the encoding favoured for a
+    distributed attack, even though it is a separate large search. $\square$
     </p>
 </div>
 

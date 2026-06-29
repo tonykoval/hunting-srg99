@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter 7 · Tools &amp; Reproducibility — Hunting SRG(99)</title>
+<link rel="stylesheet" href="../assets/book.css">
+<link rel="stylesheet" href="../assets/print.css" media="print">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+</head>
+<body>
+
+<div class="book-title-string">Hunting SRG(99)</div>
+
+<div class="book-shell">
+
+<nav class="nav-sidebar" aria-label="Table of contents">
+    <h2>Front Matter</h2>
+    <ol><li><a href="../index.html">Title &amp; Contents</a></li></ol>
+    <h2>Part I — The Problem</h2>
+    <ol>
+        <li><a href="../part1_problem/ch01_problem.html">1. Conway's $1000 Problem</a></li>
+        <li><a href="../part1_problem/ch02_structure.html">2. Spectrum &amp; Local Structure</a></li>
+    </ol>
+    <h2>Part II — The Hunt</h2>
+    <ol start="3">
+        <li><a href="../part2_hunt/ch03_symmetry.html">3. Symmetry &amp; the Order-7 Door</a></li>
+        <li><a href="../part2_hunt/ch04_sat.html">4. The SAT Verdict</a></li>
+        <li><a href="../part2_hunt/ch05_spectral.html">5. Spectral &amp; Geometric Attacks</a></li>
+    </ol>
+    <h2>Part III — Frontier</h2>
+    <ol start="6">
+        <li><a href="ch06_frontier.html">6. Findings &amp; the Frontier</a></li>
+        <li><a href="ch07_tools.html">7. Tools &amp; Reproducibility</a></li>
+    </ol>
+    <h2>Appendices</h2>
+    <ol>
+        <li><a href="../appendix/notation.html">A. Notation &amp; Glossary</a></li>
+        <li><a href="../appendix/theorems.html">B. Theorems &amp; Proofs</a></li>
+        <li><a href="../appendix/bibliography.html">C. Bibliography</a></li>
+    </ol>
+</nav>
+
+<main class="chapter" role="main">
+
+<h1 class="chapter-title">
+    <span class="chapter-number">Chapter 7 · Part III</span>
+    Tools &amp; Reproducibility
+</h1>
+
+<p class="lead">
+Every result in this book is a computation, and every computation is
+public. This chapter is the recipe: the engine, the commands that produced
+each closure, and the standing invitation to push the open doors yourself.
+</p>
+
+<h2>7.1 &nbsp; The engine</h2>
+
+<p>
+All of it lives in
+<a href="https://github.com/tonykoval/orbit-gen"><code>orbit-gen</code></a>
+— an orbit-matrix enumerator, a SAT-modulo-symmetries (SMS) solver wrapping
+CaDiCaL with a <code>nauty</code> canonicity propagator, a partial-difference
+-set search, and a Gram-PSD / Euclidean filter. The two entry points used
+here are the <code>search</code> binary (prescribed-automorphism orbit
+matrices) and the prescribed-difference-set / Gram tools.
+</p>
+
+<h2>7.2 &nbsp; Reproduce the symmetry closures</h2>
+
+<pre><code># No order-3 automorphism — orbit matrices over all fixed-point counts
+search 99 14 1 2 3 --f &lt;f&gt; --timeout 3600        # every f → 0 matrices
+
+# No order-11 automorphism — the three semiregular configurations
+search 99 14 1 2 11 --semiregular --timeout 3600  # all UNSAT
+
+# Not an abelian Cayley graph — no (99,14,1,2) difference set
+pds_cnf 99 14 1 2 --group Z99            | kissat   # UNSAT
+pds_cnf 99 14 1 2 --group Z3xZ33         | kissat   # UNSAT</code></pre>
+
+<p>
+Each "$0$ matrices" / "UNSAT" is an EXHAUSTED certificate — a real theorem
+(Appendix B.4), not a timeout.
+</p>
+
+<h2>7.3 &nbsp; The order-7 door</h2>
+
+<p>
+The unique Cesarz–Woldar configuration $[1,7^{14}]$ needs the full-diagonal
+orbit-matrix path (a subtle diagonal-valency case that earlier builds got
+wrong — see the companion notes). It does <em>not</em> finish on a desktop:
+</p>
+
+<pre><code># The famous open door: 1 fixed point, 14 orbits of size 7
+ORBIT_FULL_DIAG=1 search 99 14 1 2 7 --f 1 --timeout 0
+#   → ~281 M nodes in 1 h, stack depth still climbing — cluster-scale.
+#   A lifted matrix wins Conway's prize; UNSAT strengthens Cesarz–Woldar.</code></pre>
+
+<h2>7.4 &nbsp; The SAT and triangle encodings</h2>
+
+<pre><code># Direct CNF / pseudo-Boolean encodings (Chapter 4) — do not decide
+conway99-encode --cnf  &gt; conway99.cnf      # ~7e8 clauses, 22 GB
+conway99-encode --pb   &gt; conway99.opb      # roundingsat
+conway99-encode --triangular &gt; tri231.opb  # the (231,18,5,≤3) view</code></pre>
+
+<h2>7.5 &nbsp; The Gram-PSD / Euclidean filter</h2>
+
+<pre><code># Sound rank-44 PSD pruning on the (-4)-eigenspace embedding (Chapter 5)
+conway99-extension --gram --rank 44 --timeout 3600
+#   sound: never rejects a real graph; cluster-scale to exhaust.
+GPU_GRAM_PSD=1 ...    # batched Cholesky on a Vulkan GPU for the inner loop</code></pre>
+
+<h2>7.6 &nbsp; The standing invitation</h2>
+
+<div class="callout theorem">
+    <div class="callout-title">Push a door, claim a result</div>
+    <p>
+    Drive the order-$7$ enumeration ($\S$7.3) to completion on a cluster, or
+    complete the involution sweep ($46$ configurations via
+    <code>search 99 14 1 2 2 --f &lt;f&gt;</code>), or run the
+    claw-minimisation / Gram search to exhaustion. A single lifted matrix is
+    Conway's $\$1000$ graph; a full UNSAT is a non-existence theorem. Either
+    way you will have moved the most famous open door in the
+    strongly-regular tables — which is the whole point of writing the
+    recipe down.
+    </p>
+</div>
+
+<div class="chapter-nav">
+    <a class="prev" href="ch06_frontier.html">Ch 6 · Findings &amp; the Frontier</a>
+    <a class="next" href="../appendix/notation.html">Appendix A · Notation &amp; Glossary</a>
+</div>
+
+<footer class="book-foot">
+    <p><em>Hunting SRG(99)</em> · Chapter 7 · Tony Koval · CC-BY-4.0.</p>
+</footer>
+
+</main>
+
+</div>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+        onload="BookInit.renderMath()"></script>
+<script src="../assets/book.js"></script>
+
+</body>
+</html>

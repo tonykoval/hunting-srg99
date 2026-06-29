@@ -21,6 +21,7 @@ CHAPTERS = [
     "part2_hunt/ch04_sat.html",
     "part2_hunt/ch05_spectral.html",
     "part3_frontier/ch06_frontier.html",
+    "part3_frontier/ch07_tools.html",
     "appendix/notation.html",
     "appendix/theorems.html",
     "appendix/bibliography.html",

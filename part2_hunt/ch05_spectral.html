@@ -31,6 +31,7 @@
     <h2>Part III — Frontier</h2>
     <ol start="6">
         <li><a href="../part3_frontier/ch06_frontier.html">6. Findings &amp; the Frontier</a></li>
+        <li><a href="../part3_frontier/ch07_tools.html">7. Tools &amp; Reproducibility</a></li>
     </ol>
     <h2>Appendices</h2>
     <ol>
@@ -104,6 +105,20 @@ triangle level. The local rigidity that should help instead arrives too
 small to bite.
 </p>
 
+<div class="interactive">
+    <span class="interactive-label">Engagement comparator — does the triangle filter bite?</span>
+    <table>
+        <thead><tr><th>Parameters</th><th>Status</th><th>Margin</th><th>Filter</th></tr></thead>
+        <tbody id="eg-body"></tbody>
+    </table>
+    <p style="font-size:0.85em;color:#555;margin-top:0.4em">
+        The engagement margin is (triangle-neighbourhood count) − (multiplicity
+        cap), as computed by the <code>sz_engagement</code> tool. Positive ⇒
+        the filter over-constrains and can refute; negative ⇒ it cannot
+        engage. Conway-99 is the lone open case on the wrong side of zero.
+    </p>
+</div>
+
 <h2>5.4 &nbsp; The triangle reformulation</h2>
 
 <p>
@@ -144,6 +159,33 @@ favours, but it is a separate, large search in its own right.
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
         onload="BookInit.renderMath()"></script>
 <script src="../assets/book.js"></script>
+
+<script>
+/* ---------- Engagement comparator (sz_engagement margins) ---------- */
+(function () {
+    "use strict";
+    const body = document.getElementById("eg-body");
+    if (!body) return;
+    const ROWS = [
+        { p:"(99,14,1,2) — Conway",  st:"open",     margin:-5,  note:"does NOT engage" },
+        { p:"(88,27,6,9)",           st:"open",     margin:36,  note:"engages" },
+        { p:"(96,35,10,14)",         st:"open",     margin:52,  note:"engages" },
+        { p:"(99,42,21,15)",         st:"open",     margin:62,  note:"engages" },
+        { p:"(85,14,3,2)",           st:"refuted",  margin:null, note:"engaged → refuted (Shpectorov–Zhao 2025)" }
+    ];
+    let html = "";
+    for (const r of ROWS) {
+        const eng = r.margin === null ? true : r.margin > 0;
+        const mc = r.margin === null ? "#777" : (r.margin > 0 ? "#2e7d32" : "#b00020");
+        const fc = eng ? "#2e7d32" : "#b00020";
+        const m = r.margin === null ? "—" : (r.margin > 0 ? "+" + r.margin : r.margin);
+        html += `<tr><td>${r.p}</td><td>${r.st}</td>` +
+                `<td style="font-family:var(--font-mono);color:${mc}">${m}</td>` +
+                `<td style="color:${fc}">${r.note}</td></tr>`;
+    }
+    body.innerHTML = html;
+})();
+</script>
 
 </body>
 </html>
