@@ -172,6 +172,54 @@ requires.
         distributed and learning-guided attack.</li>
 </ol>
 
+<h2>6.6 &nbsp; New levers from the SRG(37) campaign &nbsp;<em>(2026-07)</em></h2>
+
+<p>
+The sibling hunt for a $6803$rd $\mathrm{SRG}(37,18,8,9)$ broke its own
+"cluster-scale" wall in July 2026, and three of its levers transfer here
+untested but directly:
+</p>
+
+<ul>
+    <li><strong>The full static lex chain.</strong> On the two-graph(38)
+        SMS search, instrumenting showed the canonicity propagator cost
+        $0.4\%$ of wall — the wall was raw CDCL depth. Encoding the row-lex
+        ordering over <em>all</em> consecutive row pairs as static,
+        unit-propagatable clauses (instead of a propagator-only or truncated
+        chain) gave a measured $50$–$70\times$ on hard cubes, with the
+        enumerated model set verified bit-identical. Any of the SAT-side
+        attacks here that break symmetry row-lexicographically — the
+        orbit-matrix cube sweeps, a future $[1,7^{14}]$ SAT re-encoding —
+        should try the same transfer <em>first</em>: it is implied-clause
+        sound and nearly free to test.</li>
+    <li><strong>Recursive adaptive cube-and-conquer.</strong> Replace
+        fixed-size cube sweeps by a queue of $(\text{cube},\text{size})$
+        nodes: $600$-second budget, timeout ⇒ push $16$ finer children.
+        Measured on SRG(37): $15/16$ children of a hard cube exhaust in
+        ${\sim}13$ s; the hard core isolates itself $16\times$ tighter per
+        level with no human in the loop. The order-$7$ door and the $46$
+        involution configurations are exactly this shape of workload.</li>
+    <li><strong>Deep-pinned GPU population search.</strong> A
+        defect-minimising SLS ($56{,}000$ candidates/s on a desktop GPU at
+        $n=38$) hunting <em>inside the surviving cubes</em> of the exact
+        search, rather than from random initialisation — the find-only
+        complement that costs nothing while CPUs chase certificates. For
+        $99$ vertices the natural fitness is
+        $\lVert A^2 + A - 2J - 12I\rVert^2$ (the defect against
+        $A^2 = 12I - A + 2J$), restricted to the enumeration's fixed
+        blocks.</li>
+</ul>
+
+<p>
+One SRG(37) lever does <em>not</em> transfer as-is but has an integer
+analogue worth deriving: the feasible-characteristic-polynomial tables
+(Greaves–Syatriadi LP enumeration). With spectrum
+$\{14,\,3^{54},\,(-4)^{44}\}$, Cauchy interlacing pins growing powers of
+$(x-3)$ and $(x+4)$ in every large principal submatrix of $A$, and the
+integer cofactor is enumerable — a sound endgame filter for whichever
+enumeration gets deep enough to need it.
+</p>
+
 <p>
 Conway's $99$-graph is the most famous open door in the strongly-regular
 tables. A decade on, it is still closed — but the map of how to push it is,
