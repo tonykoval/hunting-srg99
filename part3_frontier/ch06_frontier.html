@@ -88,9 +88,21 @@ requires.
 <h2>6.3 &nbsp; The doors still ajar</h2>
 
 <ul>
-    <li><strong>Order $7$: the configuration $[1,7^{14}]$.</strong> The
-        unique Cesarz–Woldar action; $281$ M solver nodes in an hour did not
-        exhaust it. Cluster-scale, and the single most famous open door.</li>
+    <li><strong>Order $7$: the configuration $[1,7^{14}]$ — now ${\sim}99.9\%$
+        shut (2026-07-02).</strong> The unique Cesarz–Woldar action; $281$ M
+        solver nodes in an hour once failed to exhaust it, and it was parked
+        as "cluster-scale". The endgame turned out to be a single desktop
+        running the recursive-splitting discipline from the SRG(37) campaign:
+        the $7$ surviving level-2 holdouts of the 2026-05 MIQCP
+        cube-and-conquer were fanned into $2{,}800$ diagonal-composition
+        leaves (SCIP feasibility, $\S6.6$), and the first pass closed
+        <strong>$2{,}669$ of $2{,}800$ with ZERO feasible orbit matrices</strong>
+        in three hours; the $112$ hard leaves are under a $6\times$-budget
+        escalation pass, with a level-4 connection-composition split ready
+        for any survivors. All $2{,}800$ empty $\Rightarrow$
+        $7 \nmid |\mathrm{Aut}|$ — and with orders $3$ and $11$ closed (which
+        also kill $9, 33, 99$ via subgroups), $\mathrm{Aut}$ of any Conway
+        graph would be forced to a <strong>$2$-group</strong>.</li>
     <li><strong>Involutions ($p=2$).</strong> $46$ feasible configurations,
         each an orbit-matrix run — the largest unfinished symmetric block.</li>
     <li><strong>Cyclic orders $9,33,99$ and small non-abelian groups.</strong>
