@@ -87,26 +87,48 @@ requires.
 
 <h2>6.3 &nbsp; The doors still ajar</h2>
 
+<div class="callout definition">
+    <div class="callout-title">Correction (2026-07-06) — the map was wrong, and a novelty check caught it</div>
+    <p>
+    An earlier revision of this chapter (and of this book's Part II) framed
+    the order-$7$ action $[1,7^{14}]$ as "the most famous open door". A
+    pre-publication literature check proved that framing stale:
+    <strong>Behbahani &amp; Lam (Discrete Math. 311, 2011) already excluded
+    every prime order except $2$ and $3$</strong> — including order $7$ (zero
+    orbit matrices at every admissible fixed-point count) and order $11$ —
+    and showed any order-$3$ automorphism must be fixed-point-free.
+    Crnković–Maksimović (2020) ruled out groups of order $6$ and $9$;
+    Cesarz–Woldar (Algebraic Combinatorics, 2025) re-derived the landscape
+    computer-free and sharpened it ($2 \mid |G| \Rightarrow |G| \mid 6$;
+    $7 \mid |G| \Rightarrow G \cong Z_7$). The published frontier is
+    therefore $\mathrm{Aut} \in \{1,\ Z_2\ (\text{one fixed vertex}),\
+    Z_3\ (\text{fixed-point-free})\}$. Our 2026-07 order-$7$ exhaustion
+    ($2{,}800$ diagonal-composition leaves, zero feasible orbit matrices)
+    stands — but as an <em>independent verification</em> of Behbahani–Lam by
+    a different method (their code was never published), not a new theorem.
+    </p>
+</div>
+
 <ul>
-    <li><strong>Order $7$: the configuration $[1,7^{14}]$ — now ${\sim}99.9\%$
-        shut (2026-07-02).</strong> The unique Cesarz–Woldar action; $281$ M
-        solver nodes in an hour once failed to exhaust it, and it was parked
-        as "cluster-scale". The endgame turned out to be a single desktop
-        running the recursive-splitting discipline from the SRG(37) campaign:
-        the $7$ surviving level-2 holdouts of the 2026-05 MIQCP
-        cube-and-conquer were fanned into $2{,}800$ diagonal-composition
-        leaves (SCIP feasibility, $\S6.6$), and the first pass closed
-        <strong>$2{,}669$ of $2{,}800$ with ZERO feasible orbit matrices</strong>
-        in three hours; the $112$ hard leaves are under a $6\times$-budget
-        escalation pass, with a level-4 connection-composition split ready
-        for any survivors. All $2{,}800$ empty $\Rightarrow$
-        $7 \nmid |\mathrm{Aut}|$ — and with orders $3$ and $11$ closed (which
-        also kill $9, 33, 99$ via subgroups), $\mathrm{Aut}$ of any Conway
-        graph would be forced to a <strong>$2$-group</strong>.</li>
+    <li><strong>Order $3$, fixed-point-free — THE open door, unfinished since
+        2011.</strong> The one case Behbahani–Lam explicitly could not
+        complete (marked "?" in their run tables: $33$ orbits of size $3$,
+        beyond their time budget) and untouched by anyone since. Closing it
+        yields the genuinely new theorem
+        <strong>$\mathrm{Aut}(\text{Conway-99}) \in \{1, Z_2\}$</strong>.
+        Live campaign (2026-07-10): the orbit-matrix system ($33\times33$,
+        $561$ quadratic constraints) resisted both SCIP and CP-SAT
+        monolithically, but the recursive box-split discipline bites —
+        CP-SAT presolve refutes $75\%$ of level-2 children in under a
+        second, survivors concentrating in the low-connection corner exactly
+        as at every other hard core. A recursive CP-SAT sweep (triage tier +
+        lex-tiebreak symmetry breaking) is grinding the $34$
+        diagonal-composition cubes now.</li>
     <li><strong>Involutions ($p=2$).</strong> $46$ feasible configurations,
-        each an orbit-matrix run — the largest unfinished symmetric block.</li>
-    <li><strong>Cyclic orders $9,33,99$ and small non-abelian groups.</strong>
-        Still to be swept.</li>
+        each an orbit-matrix run — the natural sequel once order $3$ closes,
+        and the last case standing between the literature and
+        $|\mathrm{Aut}| \le 2$ becoming $\mathrm{Aut} = 1$ or a single
+        involution class.</li>
     <li><strong>Fully rigid graphs.</strong> The asymmetric core, reached
         only by the claw-minimisation optimisation (Ch 4) or the Gram-PSD
         enumeration (Ch 5).</li>
@@ -127,14 +149,15 @@ requires.
         <g font-size="10" text-anchor="middle">
             <rect x="24" y="70" width="92" height="26" rx="4" fill="#e6f4ea" stroke="#2e7d32"/>
             <text x="70" y="87" fill="#2e7d32">order 11 — closed</text>
-            <rect x="139" y="70" width="92" height="26" rx="4" fill="#e6f4ea" stroke="#2e7d32"/>
-            <text x="185" y="87" fill="#2e7d32">order 3 — closed</text>
+            <rect x="139" y="68" width="92" height="30" rx="4" fill="#fff4e0" stroke="#b8860b" stroke-width="2"/>
+            <text x="185" y="80" fill="#b8860b" font-weight="700">order 3 fpf</text>
+            <text x="185" y="92" fill="#b8860b">★ THE open door</text>
             <rect x="254" y="70" width="92" height="26" rx="4" fill="#e6f4ea" stroke="#2e7d32"/>
             <text x="300" y="87" fill="#2e7d32">Cayley — closed</text>
             <!-- the order-7 door (highlighted) -->
-            <rect x="369" y="68" width="100" height="30" rx="4" fill="#fff4e0" stroke="#b8860b" stroke-width="2"/>
-            <text x="419" y="80" fill="#b8860b" font-weight="700">order 7 [1,7¹⁴]</text>
-            <text x="419" y="92" fill="#b8860b">★ open door</text>
+            <rect x="369" y="68" width="100" height="30" rx="4" fill="#e6f4ea" stroke="#2e7d32"/>
+            <text x="419" y="80" fill="#2e7d32">order 7 — closed</text>
+            <text x="419" y="92" fill="#2e7d32">(B–L 2011; verified 2026)</text>
             <!-- open / pending -->
             <rect x="24" y="120" width="92" height="26" rx="4" fill="#fdf0f0" stroke="#b8860b"/>
             <text x="70" y="137" fill="#b8860b">involutions — open</text>
@@ -145,10 +168,13 @@ requires.
         </g>
     </svg>
     <figcaption>
-        Figure 6.1. &nbsp; The automorphism-order tree. Green = closed
-        (no graph with that symmetry); amber = open; the famous order-$7$
-        door $[1,7^{14}]$ is highlighted. The decisive work has moved to the
-        amber leaves.
+        Figure 6.1. &nbsp; The automorphism-order tree, corrected 2026-07-06
+        against the published record. Green = closed (orders $5,7,11$ and
+        order-$3$-with-fixed-points: Behbahani–Lam 2011; orders $6,9$:
+        Crnković–Maksimović 2020); amber = genuinely open. The star sits on
+        <em>order $3$ fixed-point-free</em> — Behbahani–Lam's explicitly
+        unfinished case — and on the involutions; closing the star yields
+        $\mathrm{Aut} \in \{1, Z_2\}$.
     </figcaption>
 </figure>
 
