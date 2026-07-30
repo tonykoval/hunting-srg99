@@ -130,7 +130,36 @@ requires.
         campaign — recursive CP-SAT with triage tier and lex-tiebreak
         breaking, whose earlier $d\neq 6$ refutations now double as
         independent verification of the new lemma — attacks the single
-        surviving cube. The theorem is one cube away.</li>
+        surviving cube. The theorem is one cube away.
+        <br><strong>2026-07-30 — the citation checks out, and most of the
+        pin is now reproducible without it.</strong> A direct reading of the
+        paper confirms the application is legitimate: although it is
+        <em>titled</em> for the missing Moore graph, its trace–rank identity is
+        stated for arbitrary strongly regular graphs (Prop. 4.4), and its
+        <strong>Section 8 treats five hypothetical parameter sets with
+        $(99,14,1,2)$ among them</strong> — Table 1, row $(99,14,1,2)$, $p=3$,
+        $\mathrm{Fix}(x)=\varnothing$, gives $a_1(x)=18$ exactly, sharpening
+        precisely the range $\{18,39,60,81\}$ quoted above. So $d=6$ closes by
+        citation, not by our extension of someone else's lemma.
+        <br>Two constraints derived here reach most of the way
+        <em>independently</em>. The spectral trace pin — an orbit partition is
+        equitable, so $\operatorname{tr}(c)=2d = k + a\,r + b\,s$ with $a,b$
+        non-negative integers inside the multiplicity bounds — gives
+        $d \in \{6,13,20,27\}$, which is exactly
+        $\{18,39,60,81\}/3$: our own derivation reproduces the literature's
+        starting point. The triangle congruence — $x$ permutes the
+        $nk\lambda/6 = 231$ triangles in orbits of size $1$ or $3$, and a
+        setwise-fixed triangle must <em>be</em> a vertex orbit when $x$ is
+        fixed-point-free — forces $d \equiv 231 \equiv 0 \pmod 3$, leaving
+        $d \in \{6,27\}$. Both were validated on graphs with known answers:
+        together they pin the true $d$ exactly for $T(9)$ and $GQ(2,2)$, and
+        correctly keep both real values for Paley$(9)$.
+        <br>So $30$ of the $34$ compositions close by pure arithmetic, two more
+        by the congruence, and only $d=27$ needs the citation. <strong>The live
+        campaign now runs $d=6$ and $d=27$ together</strong> — the second not
+        because it might contain a graph, but so that a completed proof rests on
+        nothing but its own certificates. Its nodes die fast: $105$ closed and
+        counting, most inside the $5$-second triage tier.</li>
     <li><strong>Involutions ($p=2$).</strong> $46$ feasible configurations,
         each an orbit-matrix run — the natural sequel once order $3$ closes,
         and the last case standing between the literature and
