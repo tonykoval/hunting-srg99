@@ -159,7 +159,24 @@ requires.
         campaign now runs $d=6$ and $d=27$ together</strong> — the second not
         because it might contain a graph, but so that a completed proof rests on
         nothing but its own certificates. Its nodes die fast: $105$ closed and
-        counting, most inside the $5$-second triage tier.</li>
+        counting, most inside the $5$-second triage tier.
+        <br><strong>2026-08-10 — the driver learned to escalate.</strong> Two
+        structural repairs, both found by audits rather than luck. First, the
+        split-depth cap was $20$ while row $0$ has $32$ coordinates: $72$
+        leaves had been abandoned as MAXDEPTH with twelve coordinates unused —
+        a hard stop on the theorem masquerading as slow progress. Cap raised
+        to the full row; the resume logic re-expands the abandoned leaves for
+        free. Second, and deeper: the driver ran at a <em>fixed</em> $600$-second
+        budget forever and never re-solved a leaf at the true ceiling, so its
+        residue could never close no matter how long it ran. It now climbs an
+        internal <em>budget ladder</em> — each pass doubles the node budget
+        (to a $4$-hour cap) and re-attacks the surviving ceiling leaves — and
+        a capped pass that closes nothing exits with a loud
+        <code>ESCALATION STALLED</code> banner rather than burning no-op
+        passes hourly. In a sandbox drill of that machinery, two of three
+        deliberately-stuck leaves closed the moment the budget doubled.
+        Current state: $d{=}27$ past $4{,}600$ closed nodes; the $d{=}6$ deep
+        band is the residue the ladder was built for.</li>
     <li><strong>Involutions ($p=2$).</strong> $46$ feasible configurations,
         each an orbit-matrix run — the natural sequel once order $3$ closes,
         and the last case standing between the literature and
