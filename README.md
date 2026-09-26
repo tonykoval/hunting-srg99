@@ -51,8 +51,9 @@ python scripts/build_print.py     # writes print_full.html
 Search engine: [github.com/tonykoval/orbit-gen](https://github.com/tonykoval/orbit-gen).
 Sister volumes:
 [Hunting SRG(37)](https://github.com/tonykoval/hunting-srg37) (catalog completeness)
-and [Hunting SRG(69)](https://github.com/tonykoval/hunting-srg69) (smallest open
-existence question).
+and [Hunting SRG(69)](https://github.com/tonykoval/hunting-srg69) (once the smallest
+open existence question; settled 2026-09-26: no SRG(69,20,7,5) exists, by a
+computer-assisted lattice proof whose write-up is under review).
 
 ## Licence
 
